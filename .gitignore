@@ -1,0 +1,28 @@
+# Build artifacts
+distro/*.tar.gz
+distro/*.tar
+distro/*.wsl
+manifest.json
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# Temp
+tmp/
+*.tmp

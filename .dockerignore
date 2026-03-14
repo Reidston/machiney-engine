@@ -1,0 +1,21 @@
+# Exclude everything not needed inside the WSL distribution
+# The Docker build context only needs distro/ config files
+
+# Exclude Windows-side code (runs in Tauri, not WSL)
+backend/
+interceptor/
+gui/
+
+# Exclude dev/build artifacts
+node_modules/
+*.tar
+*.tar.gz
+*.exe
+*.msi
+
+# Exclude docs and git
+.git/
+.gitignore
+*.md
+*.pdf
+scripts/

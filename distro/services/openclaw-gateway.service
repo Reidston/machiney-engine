@@ -1,0 +1,33 @@
+[Unit]
+Description=OpenClaw AI Agent Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=claw_agent
+Group=claw_agent
+
+# Ensure DNS is configured (runs as root via +)
+ExecStartPre=+/bin/bash -c "test -s /etc/resolv.conf || printf 'nameserver 223.5.5.5\nnameserver 8.8.8.8\nnameserver 114.114.114.114\n' > /etc/resolv.conf"
+# Disable IPv6 (runs as root via +)
+ExecStartPre=+/sbin/sysctl -w net.ipv6.conf.all.disable_ipv6=1
+
+# Start Gateway (runs as User=claw_agent, reads auth from openclaw.json)
+ExecStart=/bin/bash -lc "openclaw gateway --bind loopback --port 18789"
+
+Restart=always
+RestartSec=5
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=openclaw-gateway
+
+# Environment
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
