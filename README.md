@@ -1,7 +1,8 @@
 # MachineY Engine (机器小乙·引擎)
 
 <p align="center">
-  <strong>🦞 机器小乙，让你成为工作的甲方</strong><br/>
+  <img src="docs/logo.png" alt="MachineY Logo" width="120" /><br/>
+  <strong>机器小乙，让你成为工作的甲方</strong><br/>
   <em>Secure AI Agent Runtime for Windows — Powered by OpenClaw</em>
 </p>
 
