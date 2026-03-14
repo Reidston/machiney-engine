@@ -33,8 +33,8 @@ RUN npm install -g openclaw || npm install -g openclaw --registry=https://regist
 # ===========================
 FROM debian:bookworm-slim AS runtime
 
-LABEL maintainer="OpenClaw WSL Team"
-LABEL description="Minimal WSL distribution for OpenClaw AI Agent"
+LABEL maintainer="MachineY Team"
+LABEL description="MachineY Linux — Secure AI Agent Runtime (Powered by OpenClaw)"
 
 # Use official Debian sources (global distribution)
 
@@ -89,8 +89,31 @@ RUN chmod +x /etc/oobe.sh
 COPY distro/scripts/openclaw-cn-setup /usr/local/bin/openclaw-cn-setup
 RUN chmod +x /usr/local/bin/openclaw-cn-setup
 
-# Application icon
-RUN mkdir -p /usr/share/icons && echo "placeholder" > /usr/share/icons/openclaw.ico
+# Application icon (PNG for WSL shortcut — wsl-distribution.conf shortcut.icon)
+# TODO: Replace with final MachineY logo when ready
+RUN mkdir -p /usr/share/icons \
+    && echo "placeholder" > /usr/share/icons/machiney.png
+
+# -----------------------------------------------------------------------------
+# WSL compliance: mask conflicting systemd services
+# See: https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro
+# -----------------------------------------------------------------------------
+RUN systemctl mask \
+    systemd-resolved.service \
+    systemd-networkd.service \
+    NetworkManager.service \
+    systemd-tmpfiles-setup.service \
+    systemd-tmpfiles-clean.service \
+    systemd-tmpfiles-clean.timer \
+    systemd-tmpfiles-setup-dev-early.service \
+    systemd-tmpfiles-setup-dev.service \
+    tmp.mount \
+    2>/dev/null || true
+
+# -----------------------------------------------------------------------------
+# WSL compliance: remove /etc/resolv.conf so WSL auto-generates DNS config
+# -----------------------------------------------------------------------------
+RUN rm -f /etc/resolv.conf
 
 # -----------------------------------------------------------------------------
 # Final cleanup — remove every byte we don't need
